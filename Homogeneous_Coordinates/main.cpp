@@ -23,13 +23,13 @@ inline Matrix<fPoint, 3, 1> normalise(const Matrix<fPoint, 3, 1>&& i_coordToTran
     return normalise;
 }
 
-// transformation matrix to transform singular 2D cube((0;0),(1;0),(0;1),(1;1)) into quadrilateral(p0,p1,p2,p3) 
+// transformation matrix to transform singular 2D cube((0;0),(0;1),(1;0),(1;1)) into quadrilateral(p0,p1,p2,p3) 
 Matrix<fPoint, 3, 3> foundTransformationMatrixLecture(Matrix<fPoint, 3, 1>& p0,
                                                 Matrix<fPoint, 3, 1>& p1,
                                                 Matrix<fPoint, 3, 1>& p2,
                                                 Matrix<fPoint, 3, 1>& p3)
 {
-    fPoint d, a, b, c, aa, bb, cc, dd, ee, ff;
+    fPoint d, a, b;
     fPoint x0 = p0[0], y0 = p0[1], x1 = p1[0], y1 = p1[1],
         x2 = p2[0], y2 = p2[1], x3 = p3[0], y3 = p3[1];
 
@@ -52,11 +52,11 @@ Matrix<fPoint, 3, 3> foundTransformationMatrixLecture(Matrix<fPoint, 3, 1>& p0,
     return result;
 }
 
-// transformation matrix to transform singular 2D cube((0;0),(1;0),(0;1),(1;1)) into quadrilateral(p0,p1,p2,p3)  
-Matrix<fPoint, 3, 3> foundTransformationMatrixMy(Matrix<fPoint, 3, 1>& p0,
-                                                    Matrix<fPoint, 3, 1>& p1,
-                                                    Matrix<fPoint, 3, 1>& p2,
-                                                    Matrix<fPoint, 3, 1>& p3)
+// transformation matrix to transform singular 2D cube((0;0),(0;1),(1;0),(1;1)) into quadrilateral(p0,p1,p2,p3) 
+Matrix<fPoint, 3, 3> foundTransformationMatrixMy(const Matrix<fPoint, 3, 1>& p0,
+                                                const Matrix<fPoint, 3, 1>& p1,
+                                                const Matrix<fPoint, 3, 1>& p2,
+                                                const Matrix<fPoint, 3, 1>& p3)
 {
     fPoint d, a, b;
     fPoint x0 = p0[0], y0 = p0[1], x1 = p1[0], y1 = p1[1], x2 = p2[0], y2 = p2[1], x3 = p3[0], y3 = p3[1];
@@ -79,15 +79,16 @@ Matrix<fPoint, 3, 3> foundTransformationMatrixMy(Matrix<fPoint, 3, 1>& p0,
     return result;
 }
 
-// transformation matrix to transform any triangle(p0,p1,p2) into ((0;0),(1;0),(0;1)) (do not work yet)
-Matrix<fPoint, 3, 3> foundTransformationMatrix(Matrix<fPoint, 3, 1>& p0,
-                                                Matrix<fPoint, 3, 1>& p1,
-                                                Matrix<fPoint, 3, 1>& p2)
+// transformation matrix to transform any triangle(p0,p1,p2) into ((0;0),(1;0),(0;1)) 
+Matrix<fPoint, 3, 3> foundTransformationMatrix(const Matrix<fPoint, 3, 1>& p0,
+                                                const Matrix<fPoint, 3, 1>& p1,
+                                                const  Matrix<fPoint, 3, 1>& p2)
 {
     fPoint d, x0 = p0[0], y0 = p0[1], x1 = p1[0], y1 = p1[1], x2 = p2[0], y2 = p2[1];
 
     Matrix<fPoint, 3, 3> result;
     d = 1 / (x0 * (y1 - y2) + x1 * (y2 - y0) + x2 * (y0 - y1));
+    //d = 1 / (x0 * y1 - x0 * y2 - x1 * y0 + x1 * y2 + x2 * y0 - x2 * y1);
     result[0] = (y2 - y0) * d;              //A
     result[1] = (x0 - x2) * d;              //B
     result[2] = (x2 * y0 - x0 * y2) * d;    //C
@@ -102,8 +103,11 @@ Matrix<fPoint, 3, 3> foundTransformationMatrix(Matrix<fPoint, 3, 1>& p0,
 }
 
 
+
 int main()
 {
+
+    //test to transform singular 2D cube((0;0),(0;1),(1;0),(1;1)) into quadrilateral(p0,p1,p2,p3)  
     Matrix<fPoint, 3, 1> p0; p0[0] = 1; p0[1] = 1; p0[2] = 1;
     Matrix<fPoint, 3, 1> p1; p1[0] = 0; p1[1] = 3; p1[2] = 1;
     Matrix<fPoint, 3, 1> p2; p2[0] = 3; p2[1] = 1; p2[2] = 1;
@@ -144,6 +148,9 @@ int main()
 
     }
 
+
+    
+    //test to transform triangle((1;2),(5;1),(4;5)) into ((0;0),(1;0),(0;1))
     p0[0] = 1; p0[1] = 2; p0[2] = 1;
     p1[0] = 5; p1[1] = 1; p1[2] = 1;
     p2[0] = 4; p2[1] = 5; p2[2] = 1;
@@ -151,13 +158,18 @@ int main()
     p_0[0] = 0; p_0[1] = 0; p_0[2] = 1;
     p_1[0] = 1; p_1[1] = 0; p_1[2] = 1;
     p_2[0] = 0; p_2[1] = 1; p_2[2] = 1;
-    trMatrLec = foundTransformationMatrix(p0, p1, p2);
+    trMatrMy = foundTransformationMatrix(p0, p1, p2);
 
 
     std::cout << "Transformation matrix for triangle:\n" << trMatrLec << '\n';
-    std::cout << "trMatrLec*p0 = " << normalise((trMatrLec * p_0)).Transpose()
-            << "trMatrLec*p1 = " << normalise((trMatrLec * p_1)).Transpose()
-            << "trMatrLec*p2 = " << normalise((trMatrLec * p_2)).Transpose()
+    std::cout << "trMatrLec*p0 = " << (trMatrMy * p0).Transpose()
+            << "trMatrLec*p1 = " << (trMatrMy * p1).Transpose()
+            << "trMatrLec*p2 = " << (trMatrMy * p2).Transpose()
             << '\n';
+
+
+
+
+
     return 0;
 }
