@@ -98,12 +98,12 @@ Matrix<fPoint, 3, 3> foundTransformationMatrixMy(const Matrix<fPoint, 3, 1>& p0,
 
 /*
                                  
-^      + p2                       ^
+^      + p1                       ^
 |     / \                         |
 |    /   \                        +
 |   /     \             ==>       | \
 |  +~~~~   \                      |    \
-| p0    ~~~~+ p1                  |       \
+| p0    ~~~~+ p2                  |       \
 *----------------->               +---------+-->
 
 */
