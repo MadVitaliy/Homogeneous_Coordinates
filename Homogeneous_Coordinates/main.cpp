@@ -23,6 +23,20 @@ inline Matrix<fPoint, 3, 1> normalise(const Matrix<fPoint, 3, 1>&& i_coordToTran
     return normalise;
 }
 
+
+/*
+* 
+^                           ^                 p3
+|                           |             ~~~+
+|                           |    p1   ~~~~    \
+|                           |     +~~~         \
++--------+           ==>    |    /              \
+|        |                  |   /                \
+|        |                  |  +~~~~~~~~~         \
+|        |                  | p0         ~~~~~~~~~~+ p2
++--------+------->          *--------------------------->
+
+*/
 // transformation matrix to transform singular 2D cube((0;0),(0;1),(1;0),(1;1)) into quadrilateral(p0,p1,p2,p3) 
 Matrix<fPoint, 3, 3> foundTransformationMatrixLecture(Matrix<fPoint, 3, 1>& p0,
                                                 Matrix<fPoint, 3, 1>& p1,
@@ -52,6 +66,8 @@ Matrix<fPoint, 3, 3> foundTransformationMatrixLecture(Matrix<fPoint, 3, 1>& p0,
     return result;
 }
 
+
+
 // transformation matrix to transform singular 2D cube((0;0),(0;1),(1;0),(1;1)) into quadrilateral(p0,p1,p2,p3) 
 Matrix<fPoint, 3, 3> foundTransformationMatrixMy(const Matrix<fPoint, 3, 1>& p0,
                                                 const Matrix<fPoint, 3, 1>& p1,
@@ -79,6 +95,18 @@ Matrix<fPoint, 3, 3> foundTransformationMatrixMy(const Matrix<fPoint, 3, 1>& p0,
     return result;
 }
 
+
+/*
+                                 
+^      + p2                       ^
+|     / \                         |
+|    /   \                        +
+|   /     \             ==>       | \
+|  +~~~~   \                      |    \
+| p0    ~~~~+ p1                  |       \
+*----------------->               +---------+-->
+
+*/
 // transformation matrix to transform any triangle(p0,p1,p2) into ((0;0),(1;0),(0;1)) 
 Matrix<fPoint, 3, 3> foundTransformationMatrix(const Matrix<fPoint, 3, 1>& p0,
                                                 const Matrix<fPoint, 3, 1>& p1,
